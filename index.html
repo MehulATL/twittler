@@ -3,25 +3,40 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.css">
   </head>
   <body>
     <script>
 
       $(document).ready(function(){
         var $body = $('body');
-        $body.html('');
+        var $tweetContainer = $('.container');
+        //$body.html('');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+        var displayTweets = function(){
+          $tweetContainer.html('');
+          var index = streams.home.length - 1;
+          while(index >= 0){
+            var tweet = streams.home[index];
+            var $tweet = $('<li></li>');
+            $tweet.text('@' + tweet.user + ': ' + tweet.message);
+            $tweet.appendTo($tweetContainer);
+            $tweetContainer.listview('refresh');
+            index -= 1;
+          }
+        };
+
+        setInterval(displayTweets, 3000);
+
 
       });
-
     </script>
+    <div data-role ="page">
+      <div data-role="header"><h1>Twittler</h1></div>
+      <div data-role="content" class="main">
+        <ul class ="container" data-role="listview"></ul>
+      </div>
+    </div>
   </body>
 </html>
