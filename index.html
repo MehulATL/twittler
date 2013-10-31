@@ -12,24 +12,36 @@
         var $body = $('body');
         var $tweetContainer = $('.container');
         var $button = $('button');
-        //$body.html('');
 
-        var displayTweets = function(){
+        var displayTweets = function(index, tweetList){
           $tweetContainer.html('');
-          var index = streams.home.length - 1;
           while(index >= 0){
-            var tweet = streams.home[index];
+            var tweet = tweetList[index];
             var $tweet = $('<li></li>');
-            $tweet.html('@' + tweet.user + ': ' + tweet.message + ' <span class = "text-muted" style = "font-size:0.8em">' + tweet.created_at.toString() + '</span>');
+            $tweet.html('<a class ="' + tweet.user + '">@' + tweet.user + '</a>: ' + tweet.message + ' <span class = "text-muted" style = "font-size:0.8em">' + tweet.created_at.toString() + '</span>');
             $tweet.addClass("list-group-item");
             $tweet.appendTo($tweetContainer);
             index -= 1;
           }
         };
 
-        //setInterval(displayTweets, 3000);
-        displayTweets(); //intial tweet load
-        $button.click(displayTweets); //load new tweets on button press
+        //display tweets on page load
+        displayTweets(streams.home.length - 1, streams.home); 
+
+        //display new tweets on button press
+        $button.click(function(e){
+          e.preventDefault();
+          displayTweets(streams.home.length - 1, streams.home);
+        });
+
+        //show user specific tweets upon clicking username
+        $tweetContainer.on('click', 'a', function(e){
+          e.preventDefault();
+          var user = $(this).attr('class');
+          var userTimeline = streams.users[user];
+          var timelineLength = userTimeline.length - 1;
+          displayTweets(timelineLength,userTimeline);
+        });
 
       });
     </script>
