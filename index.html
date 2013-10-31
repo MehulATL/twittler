@@ -3,24 +3,24 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
-    <link rel="stylesheet" type="text/css" href="http://bootswatch.com/cosmo/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="http://bootswatch.com/cerulean/bootstrap.min.css">
   </head>
   <body>
     <script>
-
       $(document).ready(function(){
-        var $body = $('body');
+        //variables of dom objects to speed up program
         var $tweetContainer = $('.container');
         var $button = $('button');
 
+        //modified original function to be more modular
         var displayTweets = function(index, tweetList){
           $tweetContainer.html('');
           while(index >= 0){
             var tweet = tweetList[index];
             var $tweet = $('<li></li>');
-            $tweet.html('<a class ="' + tweet.user + '">@' + tweet.user + '</a>: ' + tweet.message + ' <span class = "text-muted" style = "font-size:0.8em">' + tweet.created_at.toString() + '</span>');
+            $tweet.html('<a style = "cursor:pointer cursor:hand;" class ="' + tweet.user + '">@' + tweet.user + '</a>: ' + tweet.message + ' <span class = "text-muted" style = "font-size:0.8em">' + tweet.created_at.toString() + '</span>');
             $tweet.addClass("list-group-item");
-            $tweet.appendTo($tweetContainer);
+            $tweetContainer.append($tweet);
             index -= 1;
             $button.html('Show New Tweets')
           }
@@ -48,7 +48,7 @@
       });
     </script>
     <div class = "jumbotron" style = "margin:0px 0px 0px 0px;">
-      <p><span class = "text-primary" style = "font-size:2.5em;">Twittler</span><span class = "text-muted"> By: </span> <span class = "text-info">Mehul Patel</span></p>
+      <p><span class = "text-primary" style = "font-size:2.5em;">Twittler</span><span class = "text-muted"> By: Mehul Patel</span></p>
     </div>
     <button class="btn-primary btn-block">Show New Tweets</button><br><br>
     <ul class = "list-group container" style = "display: block;"></ul>
