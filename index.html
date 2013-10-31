@@ -22,6 +22,7 @@
             $tweet.addClass("list-group-item");
             $tweet.appendTo($tweetContainer);
             index -= 1;
+            $button.html('Show New Tweets')
           }
         };
 
@@ -41,6 +42,7 @@
           var userTimeline = streams.users[user];
           var timelineLength = userTimeline.length - 1;
           displayTweets(timelineLength,userTimeline);
+          $button.html('Back to Main Timeline');
         });
 
       });
