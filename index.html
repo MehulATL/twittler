@@ -4,13 +4,28 @@
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
     <link rel="stylesheet" type="text/css" href="http://bootswatch.com/cerulean/bootstrap.min.css">
+    <style>
+      .center {margin:0 auto;}
+      .messagebox {width:600px;}
+      .tweetdiv { 
+        width: 1000px;
+        margin: 0 auto;
+        text-align: left;
+      }
+    </style>
   </head>
   <body>
     <script>
       $(document).ready(function(){
         //variables of dom objects to speed up program
         var $tweetContainer = $('.container');
-        var $button = $('button');
+        var $moreTweetsBTN = $('.moreTweets');
+        var $sendTweetBTN = $('.sendTweet');
+        var $message = $('.messagebox');
+
+        //prompt to store username as global var and in streams.users obj
+        visitor = prompt("What's your name?");
+        streams.users[visitor]=[];
 
         //modified original function to be more modular
         var displayTweets = function(index, tweetList){
@@ -18,11 +33,11 @@
           while(index >= 0){
             var tweet = tweetList[index];
             var $tweet = $('<li></li>');
-            $tweet.html('<a style = "cursor:pointer cursor:hand;" class ="' + tweet.user + '">@' + tweet.user + '</a>: ' + tweet.message + ' <span class = "text-muted" style = "font-size:0.8em">' + tweet.created_at.toString() + '</span>');
+            $tweet.html('<a style = "cursor:pointer cursor:hand;" class ="' + tweet.user + '">@' + tweet.user + '</a>: ' + tweet.message + ' <span class = "text-muted" style = "font-size:0.8em">' + tweet.created_at + '</span>');
             $tweet.addClass("list-group-item");
             $tweetContainer.append($tweet);
             index -= 1;
-            $button.html('Show New Tweets')
+            $moreTweetsBTN.html('Show New Tweets');
           }
         };
 
@@ -30,19 +45,26 @@
         displayTweets(streams.home.length - 1, streams.home); 
 
         //display new tweets on button press
-        $button.click(function(e){
+        $moreTweetsBTN.click(function(e){
           e.preventDefault();
           displayTweets(streams.home.length - 1, streams.home);
         });
 
-        //show user specific tweets upon clicking username
+        //send user tweets
+        $sendTweetBTN.click(function(e){
+          e.preventDefault();
+          writeTweet($message.val());
+          $message.val('');
+        });
+
+        //show user-specific tweets upon clicking username
         $tweetContainer.on('click', 'a', function(e){
           e.preventDefault();
           var user = $(this).attr('class');
           var userTimeline = streams.users[user];
           var timelineLength = userTimeline.length - 1;
           displayTweets(timelineLength,userTimeline);
-          $button.html('Back to Main Timeline');
+          $moreTweetsBTN.html('Back to Main Timeline');
         });
 
       });
@@ -50,7 +72,17 @@
     <div class = "jumbotron" style = "margin:0px 0px 0px 0px;">
       <p><span class = "text-primary" style = "font-size:2.5em;">Twittler</span><span class = "text-muted"> By: Mehul Patel</span></p>
     </div>
-    <button class="btn-primary btn-block">Show New Tweets</button><br><br>
+
+    <button class="btn-primary btn-block moreTweets">Show New Tweets</button><br><br>
+
+    <div class = "tweetdiv">
+      <form class="form-inline" role="form">
+        <div class="form-group">
+          <input type="text" class="form-control messagebox" placeholder="Compose new Tweet....">
+        </div>
+        <button class="btn btn-success sendTweet">Tweet!</button>
+      </form><br><br>
+    </div>
     <ul class = "list-group container" style = "display: block;"></ul>
   </body>
 </html>
