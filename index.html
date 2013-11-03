@@ -13,21 +13,23 @@
         text-align: left;
       }
     </style>
+    <title>Twittler</title>
   </head>
   <body>
     <script>
       $(document).ready(function(){
-        //variables of dom objects to speed up program
+        //declare global vars
         var $tweetContainer = $('.container');
         var $moreTweetsBTN = $('.moreTweets');
         var $sendTweetBTN = $('.sendTweet');
-        var $message = $('.messagebox');
+        var $textInput = $('.messagebox');
+        var tweetContent;
 
-        //prompt to store username as global var and in streams.users obj
+        //prompt user for name to store as global var and in streams.users obj found in data_generator.js
         visitor = prompt("What's your name?");
         streams.users[visitor]=[];
 
-        //modified original function to be more modular
+        //modified provided display function to be more modular
         var displayTweets = function(index, tweetList){
           $tweetContainer.html('');
           while(index >= 0){
@@ -50,11 +52,23 @@
           displayTweets(streams.home.length - 1, streams.home);
         });
 
-        //send user tweets
+        //disable send button if text input is empty
+        $textInput.on("keyup", function(e){
+          e.preventDefault();
+          tweetContent = this.value;
+          if(tweetContent.length < 1){
+            $sendTweetBTN.prop('disabled', true);
+          } else {
+            $sendTweetBTN.prop('disabled', false);            
+          }
+        });
+  
+        //send user tweet 
         $sendTweetBTN.click(function(e){
           e.preventDefault();
-          writeTweet($message.val());
-          $message.val('');
+          writeTweet(tweetContent);
+          $textInput.val('');
+          $moreTweetsBTN.click();
         });
 
         //show user-specific tweets upon clicking username
@@ -80,7 +94,7 @@
         <div class="form-group">
           <input type="text" class="form-control messagebox" placeholder="Compose new Tweet....">
         </div>
-        <button class="btn btn-success sendTweet">Tweet!</button>
+        <button class="btn btn-success sendTweet" disabled = "false">Tweet!</button>
       </form><br><br>
     </div>
     <ul class = "list-group container" style = "display: block;"></ul>
