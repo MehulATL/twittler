@@ -3,6 +3,8 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.4.0/moment.min.js"></script>
+    <script src="livestamp.js"></script>
     <link rel="stylesheet" type="text/css" href="http://bootswatch.com/cerulean/bootstrap.min.css">
     <style>
       .center {margin:0 auto;}
@@ -35,7 +37,7 @@
           while(index >= 0){
             var tweet = tweetList[index];
             var $tweet = $('<li></li>');
-            $tweet.html('<a style = "cursor:pointer cursor:hand;" class ="' + tweet.user + '">@' + tweet.user + '</a>: ' + tweet.message + ' <span class = "text-muted" style = "font-size:0.8em">' + tweet.created_at + '</span>');
+            $tweet.html('<a style = "cursor:pointer cursor:hand;" class ="' + tweet.user + '">@' + tweet.user + '</a>: ' + tweet.message + ' <span class = "text-muted" style = "font-size:0.8em" data-livestamp="' + tweet.created_at + '"></span>');
             $tweet.addClass("list-group-item");
             $tweetContainer.append($tweet);
             index -= 1;
